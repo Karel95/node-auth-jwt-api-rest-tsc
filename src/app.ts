@@ -17,4 +17,4 @@ app.use('/users', usersRoutes)
 
 console.log("Hello world")
 
-export  default app
+export default app
