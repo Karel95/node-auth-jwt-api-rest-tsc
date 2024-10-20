@@ -7,7 +7,13 @@ export const createUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body; // Include name in destructuring
+
+    // Validate the input
+    if (!name) {
+      res.status(400).json({ message: "El nombre es obligatorio" });
+      return;
+    }
     if (!email) {
       res.status(400).json({ message: "El email es obligatorio" });
       return;
@@ -16,20 +22,28 @@ export const createUser = async (
       res.status(400).json({ message: "El password es obligatorio" });
       return;
     }
+
+    // Hash the password
     const hashedPassword = await hashPassword(password);
-    const user = await prisma.create({
+
+    // Create user with name, email, and hashed password
+    const user = await prisma.user.create({
       data: {
+        name,
         email,
         password: hashedPassword,
       },
     });
-    res.status(201).json(user);
+
+    res.status(201).json(user); // Respond with the created user
   } catch (error: any) {
+    // Handle unique constraint violation for email
     if (error?.code === "P2002" && error?.meta?.target?.includes("email")) {
       res.status(400).json({ message: "El mail ingresado ya existe" });
+    } else {
+      console.log(error);
+      res.status(500).json({ error: "Hubo un error, pruebe más tarde" });
     }
-    console.log(error);
-    res.status(500).json({ error: "Hubo un error, pruebe más tarde" });
   }
 };
 
@@ -38,7 +52,7 @@ export const getAllUsers = async (
   res: Response
 ): Promise<void> => {
   try {
-    const users = await prisma.findMany();
+    const users = await prisma.user.findMany();
     res.status(200).json(users);
   } catch (error: any) {
     console.log(error);
@@ -52,7 +66,7 @@ export const getUserById = async (
 ): Promise<void> => {
   const userId = parseInt(req.params.id);
   try {
-    const user = await prisma.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         id: userId,
       },
@@ -87,7 +101,7 @@ export const updateUser = async (
       dataToUpdate.email = email;
     }
 
-    const user = await prisma.update({
+    const user = await prisma.user.update({
       where: {
         id: userId,
       },
@@ -113,7 +127,7 @@ export const deleteUser = async (
 ): Promise<void> => {
   const userId = parseInt(req.params.id);
   try {
-    await prisma.delete({
+    await prisma.user.delete({
       where: {
         id: userId,
       },

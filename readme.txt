@@ -79,3 +79,6 @@ package.json:
 npm run build
 
 npm install --save-dev @types/cors
+
+npx prisma migrate dev --name add-name-to-user
+
