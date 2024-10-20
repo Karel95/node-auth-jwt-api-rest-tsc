@@ -13,9 +13,9 @@ app.use(express.json())
 app.use(cors());
 
 // O permitir solo tu dominio de frontend
-// app.use(cors({
-//   origin: 'http://localhost:5173'  // Cambia por tu dominio en producción si es necesario
-// }));
+app.use(cors({
+  origin: 'http://localhost:5173'  // Cambia por tu dominio en producción si es necesario
+}));
 
 // Routes:
 //Authentication:
