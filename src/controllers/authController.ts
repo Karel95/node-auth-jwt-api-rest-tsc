@@ -77,7 +77,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = generateToken(user);
-    res.status(200).json({ token, name: user.name }); // Include name in the response
+    res.status(200).json({ token, name: user.name, id: user.id });
     console.log(token);
   } catch (error: any) {
     console.log("Error: ", error);
