@@ -4,4 +4,4 @@ import { PrismaClient } from "@prisma/client";
 // Initialize Prisma Client
 const prisma = new PrismaClient();
 
-export default prisma; // Export the entire client
+export default prisma.user; // Export the entire client

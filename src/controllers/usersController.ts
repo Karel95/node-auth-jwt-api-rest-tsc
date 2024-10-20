@@ -27,7 +27,7 @@ export const createUser = async (
     const hashedPassword = await hashPassword(password);
 
     // Create user with name, email, and hashed password
-    const user = await prisma.user.create({
+    const user = await prisma.create({
       data: {
         name,
         email,
@@ -52,7 +52,7 @@ export const getAllUsers = async (
   res: Response
 ): Promise<void> => {
   try {
-    const users = await prisma.user.findMany();
+    const users = await prisma.findMany();
     res.status(200).json(users);
   } catch (error: any) {
     console.log(error);
@@ -66,7 +66,7 @@ export const getUserById = async (
 ): Promise<void> => {
   const userId = parseInt(req.params.id);
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.findUnique({
       where: {
         id: userId,
       },
@@ -101,7 +101,7 @@ export const updateUser = async (
       dataToUpdate.email = email;
     }
 
-    const user = await prisma.user.update({
+    const user = await prisma.update({
       where: {
         id: userId,
       },
@@ -127,7 +127,7 @@ export const deleteUser = async (
 ): Promise<void> => {
   const userId = parseInt(req.params.id);
   try {
-    await prisma.user.delete({
+    await prisma.delete({
       where: {
         id: userId,
       },
