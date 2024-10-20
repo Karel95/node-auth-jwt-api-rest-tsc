@@ -70,12 +70,17 @@ export const getUserById = async (
       where: {
         id: userId,
       },
-      select: { email: true }, // Selecciona solo el email
+      select: {
+        email: true,
+        name: true, // Selecciona también el nombre del usuario
+      },
     });
+
     if (!user) {
       res.status(404).json({ error: "El usuario no fue encontrado" });
       return;
     }
+
     res.status(200).json(user);
   } catch (error: any) {
     console.log(error);
