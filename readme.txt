@@ -77,3 +77,5 @@ package.json:
     "start": "node dist/server.js",
   },
 npm run build
+
+npm install --save-dev @types/cors
